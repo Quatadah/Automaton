@@ -1,0 +1,65 @@
+Q6 - Il faut inclure la bibliothèque <vector>
+Le prototype est : bool is_accepted(vector<int> v)
+Le langage ne contenant que des 0 et 1, on peut considérer que
+le vecteur v sera un vecteur d'entiers naturels.
+
+
+Q8 - Dans le fichier .hpp, on écrit que les prototypes des méthodes.
+Le code réel il faut l'écrire dans un fichier qui porte le même nom avec
+l'extention .cpp
+Le code de is_accepted() doit être écrit dans triplezero.cpp dans ce cas.
+
+Q15 - Le prototype est "void firstletter(char)"
+De 1, la méthode ne retourne aucune valeur, elle modifie uniquement 
+la valeur de letter1.
+De 2, on ne met pas const après les parenthèses car la méthode modifie 
+justement un des attributs privés de la classe.
+
+Q25 - 
+#include <iostream>
+using std::cerr;
+using std::cout;
+using std::endl;
+#include <fstream>
+using std::ifstream;
+#include <cstdlib>
+#include "Automaton.hpp"
+
+int main(int argc, char *argv[]) {
+    vector<char> v; // where we gonna stock our vector
+    ifstream indata;  // indata is like cin
+    char num; // variable for input value
+        indata.open("motbizarre.dat"); // opens the file
+    if(!indata) { 
+        cerr << "Erreur : Le fichier ne peut pas être ouvert" << endl;
+        exit(1);
+    }
+    indata >> num;
+    while ( !indata.eof() ) { // keep reading until end-of-file        
+        v.push_back(num);
+        indata >> num;  // sets EOF flag if no value found
+    }
+    indata.close();
+
+    Automaton<int> automaton("automate.dat");
+    vector<char>::iterator begin = v.begin();
+    vector<char>::iterator end = v.end();
+    bool is_valid = is_accepted(begin, end);
+    string answer = is_valid ? "Oui" : "Non";
+    cout << "Le mot est accepté ? " << answer << endl;
+}
+
+Q27 -Le prototype:  Automaton operator* (Automaton const &automaton2) const;
+La méthode reçoit en paramètre un automate qui sera multiplié par l'automate (this).
+le resultat sera envoyé comme valeur de retour. L'automate (this) ne sera pas changé 
+d'où const à la fin.
+Avec l'implémentation donné, on ne pourra pas faire de multiplication de deux automates,
+il faut une implémentation plus générale. Notamment (init_state) est un entier, alors que 
+(init_state) d'un produit de deux automate doit être une liste d'entiers.
+
+Q30 - Il faut agir sur le template<Symbol>
+Pour la classe qui prend des vecteurs 0, 1 => Symbol sera le type <int>
+Pour la classe qui agit sur des conteneurs alphabet => Symbol sera de type <char>
+ainsi l'instanciation se fera comme suit:
+    Automaton<char> automatonalphabet;
+    Automaton<int> triplezero;
