@@ -1,2 +1,2 @@
 # Automaton
-This repository simulates how automata work
+This application simulates automata with all their needs.
